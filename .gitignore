@@ -24,6 +24,7 @@ main
 *.ckpt
 *.csv
 *.0
+*.1
 # Visual debugger configurations
 .vscode/
 .vs/
