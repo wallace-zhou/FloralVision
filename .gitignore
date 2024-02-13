@@ -8,19 +8,29 @@
 # Executables and debug files
 main
 *.jpg
+*.yaml
+*.csv
+*.ckpt
 *.exe
 *.dSYM
 *.stackdump
-
+*.tgz
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.yaml
+*.ckpt
+*.csv
+*.0
 # Visual debugger configurations
 .vscode/
 .vs/
 *.vcxproj
 *.vcxproj.*
 *.xcodeproj/
-jpg/*
-lightning_logs/*
-*.pyc
+
 # Output files
 *.log
 *.out
