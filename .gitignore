@@ -18,7 +18,9 @@ main
 *.vcxproj
 *.vcxproj.*
 *.xcodeproj/
-
+jpg/*
+lightning_logs/*
+*.pyc
 # Output files
 *.log
 *.out
