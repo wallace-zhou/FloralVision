@@ -78,6 +78,7 @@ class FlowerModule(pl.LightningModule):
     
 tr_loader = get_loader(task = "train",batch_size = 32)
 va_loader = get_loader(task = "validation",batch_size = 32)
+# te_loader = get_loader(task = "test",batch_size=32)
 #TODO: create a new model file within the model folder
 #      import that model here and apply it to the training algorithm
 cnn = resnet.Resnet()
@@ -86,9 +87,11 @@ cnn = resnet.Resnet()
 model = FlowerModule(cnn, torch.nn.CrossEntropyLoss(), lr=0.01)
 # Initantiate Trainer and start training
 #TODO: modify max epochs as well as patience
-trainer = pl.Trainer(max_epochs=50,log_every_n_steps=32,callbacks=[EarlyStopping(monitor="val_loss", mode="min", patience = 10)])  # Change settings as needed
+trainer = pl.Trainer(log_every_n_steps=32,callbacks=[EarlyStopping(monitor="val_loss", mode="min", patience = 10)])  # Change settings as needed
 trainer.fit(model, tr_loader, va_loader)
-
+#TODO: Uncomment the next 2 line to test the model on the test parition (edit which epoch)
+te_loader = get_loader(task="test",batch_size=64)
+trainer.test(model, te_loader)
 
 
 ### from pytorch documentation

@@ -89,8 +89,8 @@ class ImageSet():
         missing = 0
         print("loading data")
         for id in partition:
-
-            y.append(self.label[id]-1)
+            ## NEED TO FIX THIS
+            y.append(self.label[id-1]-1)
             id_string = str(id).zfill(5)
             try:
                 img = iio.imread('jpg/image_'+id_string+'.jpg')
