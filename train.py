@@ -6,7 +6,7 @@ import pytorch_lightning as pl
 from image import get_loader
 from torch.nn.functional import softmax
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from model import resnet
+from model import densenet
 
 # # import os
 # # from torch import optim, nn, utils, Tensor
