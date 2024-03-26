@@ -6,8 +6,9 @@ import pytorch_lightning as pl
 from image import get_loader
 from torch.nn.functional import softmax
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from model import densenet
-
+from model import resnet
+from yolov5.models.experimental import attempt_load
+from yolov5.utils.general import non_max_suppression
 # # import os
 # # from torch import optim, nn, utils, Tensor
 # # from torchvision.datasets import MNIST
@@ -30,8 +31,10 @@ class FlowerModule(pl.LightningModule):
     def __init__(self, model, loss_fn, lr):
         super(FlowerModule, self).__init__()
         self.lr = lr
+        if(model == "yolov5"):
+            self.model = attempt_load("yolov5s")
+            self.model.eval()
         # Define your CNN model # Replace with your CNN model
-        self.model = model
         # Define loss function and optimizer
         self.loss_fn = loss_fn
         
@@ -81,7 +84,7 @@ va_loader = get_loader(task = "validation",batch_size = 32)
 # te_loader = get_loader(task = "test",batch_size=32)
 #TODO: create a new model file within the model folder
 #      import that model here and apply it to the training algorithm
-cnn = resnet.Resnet()
+cnn = "yolov5"
 #TODO: modify loss function if you want
 #      modify learning rate
 model = FlowerModule(cnn, torch.nn.CrossEntropyLoss(), lr=0.01)

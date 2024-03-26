@@ -5,6 +5,23 @@
 # A .gitignore file will tell git which files and directories to ignore and
 # not add to version control.
 
+datasets/
+yolov5/
+*.weights
+*.pt
+*.pb
+*.onnx
+*.engine
+*.mlmodel
+*.torchscript
+*.tflite
+*.h5
+*_saved_model/
+*_web_model/
+*_openvino_model/
+*_paddle_model/
+darknet53.conv.74
+yolov3-tiny.conv.15
 # Executables and debug files
 main
 *.jpg
