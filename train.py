@@ -6,7 +6,8 @@ import pytorch_lightning as pl
 from image import get_loader
 from torch.nn.functional import softmax
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
-from model import resnet
+from pytorch_lightning.callbacks import ModelCheckpoint
+from model import dense
 
 # # import os
 # # from torch import optim, nn, utils, Tensor
@@ -27,7 +28,7 @@ from model import resnet
 # #         return self.val_loader
 
 class FlowerModule(pl.LightningModule):
-    def __init__(self, model, loss_fn, lr):
+    def __init__(self, model, loss_fn = torch.nn.CrossEntropyLoss(), lr = 0.01):
         super(FlowerModule, self).__init__()
         self.lr = lr
         # Define your CNN model # Replace with your CNN model
@@ -75,23 +76,24 @@ class FlowerModule(pl.LightningModule):
         values = {"test_loss": loss, "test_acc": accuracy}
         self.log_dict(values, on_step=False, on_epoch=True)
 
-    
-tr_loader = get_loader(task = "train",batch_size = 32)
-va_loader = get_loader(task = "validation",batch_size = 32)
-# te_loader = get_loader(task = "test",batch_size=32)
-#TODO: create a new model file within the model folder
-#      import that model here and apply it to the training algorithm
-cnn = resnet.Resnet()
-#TODO: modify loss function if you want
-#      modify learning rate
-model = FlowerModule(cnn, torch.nn.CrossEntropyLoss(), lr=0.01)
-# Initantiate Trainer and start training
-#TODO: modify max epochs as well as patience
-trainer = pl.Trainer(log_every_n_steps=32,callbacks=[EarlyStopping(monitor="val_loss", mode="min", patience = 10)])  # Change settings as needed
-trainer.fit(model, tr_loader, va_loader)
-#TODO: Uncomment the next 2 line to test the model on the test parition (edit which epoch)
-te_loader = get_loader(task="test",batch_size=64)
-trainer.test(model, te_loader)
+if __name__ == "__main__": 
+    tr_loader = get_loader(task = "train",batch_size = 32)
+    va_loader = get_loader(task = "validation",batch_size = 32)
+    # te_loader = get_loader(task = "test",batch_size=32)
+    #TODO: create a new model file within the model folder
+    #      import that model here and apply it to the training algorithm
+    cnn = dense.Dense()
+    #TODO: modify loss function if you want
+    #      modify learning rate
+    model = FlowerModule(cnn, torch.nn.CrossEntropyLoss(), lr=0.01)
+    # Initantiate Trainer and start training
+    #TODO: modify max epochs as well as patience
+
+    trainer = pl.Trainer(log_every_n_steps=32,callbacks=[ModelCheckpoint(save_top_k=1, monitor="val_loss", mode = 'min'), EarlyStopping(monitor="val_loss", mode="min", patience = 5)])  # Change settings as needed
+    trainer.fit(model, tr_loader, va_loader)
+    #TODO: Uncomment the next 2 line to test the model on the test parition (edit which epoch)
+    te_loader = get_loader(task="test",batch_size=64)
+    trainer.test(model, te_loader)
 
 
 ### from pytorch documentation

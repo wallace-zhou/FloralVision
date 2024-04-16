@@ -42,7 +42,8 @@ def get_loader(batch_size, task = "train"):
         transforms.Normalize(
             mean=[0.485, 0.456, 0.406],    # Mean values for the model
             std=[0.229, 0.224, 0.225]       # Standard deviation values
-        )
+        ),
+        # transforms.Grayscale(3)
     ])
     dataset = ImageSet(task, transform=preprocess)
     # dataset.X = dataset.X.transpose(0,3,1,2)
